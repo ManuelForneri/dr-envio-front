@@ -45,16 +45,13 @@ export const AddProductForm = ({ onProductAdded }: AddProductFormProps) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/products`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (!response.ok) {
         throw new Error("Error al crear el producto");
@@ -81,12 +78,7 @@ export const AddProductForm = ({ onProductAdded }: AddProductFormProps) => {
 
   if (!showForm) {
     return (
-      <Button
-        onClick={() => setShowForm(true)}
-        colorScheme="blue"
-        color={"black"}
-        mb={4}
-      >
+      <Button onClick={() => setShowForm(true)} colorScheme="blue" mb={4}>
         Agregar Producto
       </Button>
     );
@@ -99,7 +91,6 @@ export const AddProductForm = ({ onProductAdded }: AddProductFormProps) => {
         borderRadius: "0.5rem",
         padding: "1rem",
         marginBottom: "1rem",
-        backgroundColor: "black",
       }}
     >
       <p
