@@ -1,30 +1,31 @@
-import { extendTheme } from '@chakra-ui/react';
+import { theme as baseTheme } from "@chakra-ui/theme";
 
-const theme = extendTheme({
+const customTheme = {
+  ...baseTheme,
   styles: {
     global: {
       body: {
-        bg: 'gray.50',
+        bg: "gray.50",
       },
     },
   },
   components: {
     Button: {
       baseStyle: {
-        fontWeight: 'bold',
-        borderRadius: 'md',
+        fontWeight: "bold",
+        borderRadius: "md",
       },
       variants: {
         solid: (props: any) => ({
-          bg: props.colorMode === 'dark' ? 'blue.500' : 'blue.500',
-          color: 'white',
+          bg: "blue.500",
+          color: "white",
           _hover: {
-            bg: props.colorMode === 'dark' ? 'blue.600' : 'blue.600',
+            bg: "blue.600",
           },
         }),
       },
     },
   },
-});
+};
 
-export default theme;
+export default customTheme;
