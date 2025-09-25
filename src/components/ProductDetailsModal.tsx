@@ -38,6 +38,15 @@ export function ProductDetailsModal({
 }: ProductDetailsModalProps) {
   const [product, setProduct] = useState<ProductDetails | null>(null);
   const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
+  const showNotification = (type: "success" | "error", message: string) => {
+    setNotification({ type, message });
+    setTimeout(() => setNotification(null), 5000);
+  };
 
   useEffect(() => {
     if (isOpen && productId) {
@@ -59,8 +68,7 @@ export function ProductDetailsModal({
       const data = await response.json();
       setProduct(data.data || data);
     } catch (error) {
-      console.error("Error:", error);
-      alert("No se pudieron cargar los detalles del producto");
+      showNotification("error", "No se pudieron cargar los detalles del producto");
     } finally {
       setLoading(false);
     }
@@ -69,19 +77,52 @@ export function ProductDetailsModal({
   if (!isOpen) return null;
 
   return (
-    <Box
-      position="fixed"
-      top="0"
-      left="0"
-      right="0"
-      bottom="0"
-      bg="blackAlpha.800"
-      zIndex="9999"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      onClick={onClose}
-    >
+    <>
+      {notification && (
+        <Box
+          position="fixed"
+          top={4}
+          right={4}
+          zIndex={10000}
+          maxW="400px"
+          p={4}
+          borderRadius="md"
+          bg={notification.type === "success" ? "green.100" : "red.100"}
+          border="1px"
+          borderColor={notification.type === "success" ? "green.200" : "red.200"}
+        >
+          <Text fontWeight="bold" color={notification.type === "success" ? "green.800" : "red.800"}>
+            {notification.type === "success" ? "✅ Éxito" : "❌ Error"}
+          </Text>
+          <Text color={notification.type === "success" ? "green.700" : "red.700"} fontSize="sm">
+            {notification.message}
+          </Text>
+          <Button
+            size="xs"
+            position="absolute"
+            top={2}
+            right={2}
+            onClick={() => setNotification(null)}
+            variant="ghost"
+            color={notification.type === "success" ? "green.600" : "red.600"}
+          >
+            ✕
+          </Button>
+        </Box>
+      )}
+      <Box
+        position="fixed"
+        top="0"
+        left="0"
+        right="0"
+        bottom="0"
+        bg="blackAlpha.800"
+        zIndex="9999"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        onClick={onClose}
+      >
       <Box
         bg="white"
         borderRadius="md"
@@ -189,5 +230,6 @@ export function ProductDetailsModal({
         </VStack>
       </Box>
     </Box>
+    </>
   );
 }

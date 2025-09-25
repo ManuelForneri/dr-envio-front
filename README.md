@@ -1,59 +1,86 @@
-# React + TypeScript + Vite
+# Dr. Envío - Catálogo de Productos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🚀 Características
 
-Currently, two official plugins are available:
+- **Sistema de ofertas premium** basado en marcas
+- **Interfaz responsiva** con Chakra UI
+- **Modal de detalles** con información completa del producto
+- **Precios dinámicos** con descuentos automáticos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tecnologías
 
-## React Compiler
+- **React 18** - Librería de interfaz de usuario
+- **TypeScript** - Tipado estático para JavaScript
+- **Vite** - Herramienta de desarrollo rápida
+- **Chakra UI** - Componentes de UI accesibles
+- **React Router** - Navegación del lado del cliente
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📦 Instalación
 
-## Expanding the ESLint configuration
+1. Clona el repositorio:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      tseslint.configs.recommendedTypeChecked,
-      tseslint.configs.strictTypeChecked,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
-]);
+```bash
+git clone <https://github.com/ManuelForneri/dr-envio-front.git>
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Instala las dependencias:
 
-```js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+```bash
+npm install
+```
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      reactX.configs["recommended-typescript"],
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
-]);
+3. Inicia el servidor de desarrollo:
+
+```bash
+npm run dev
+```
+
+## 🎯 Funcionalidades Principales
+
+### Para Usuarios
+
+- ✅ **Visualización de productos** con información detallada
+- ✅ **Precios especiales** para marcas premium
+- ✅ **Modal de detalles** con especificaciones completas
+- ✅ **Interfaz intuitiva** y responsive
+
+### Para Administradores
+
+- ✅ **Gestión de productos** (agregar)
+
+## 🔐 Sistema de Ofertas Premium
+
+El sistema permite configurar ofertas especiales para usuarios que tienen acceso a ciertas marcas:
+
+- **Descuentos automáticos** en productos de marcas premium
+- **Visualización clara** de precios originales vs. ofertas
+
+## 📱 Interfaz de Usuario
+
+- **Diseño moderno** con Chakra UI
+- **Completamente responsive** (móvil, tablet, desktop)
+- **Tema consistente** en toda la aplicación
+- **Componentes accesibles** y usables
+
+## 🚀 Despliegue
+
+### Desarrollo Local
+
+```bash
+npm run dev
+```
+
+## 📄 Estructura del Proyecto
+
+```
+src/
+├── components/          # Componentes reutilizables
+│   ├── ProductCard.tsx     # Tarjeta de producto
+│   ├── ProductDetailsModal.tsx  # Modal de detalles
+│   └── ...
+├── pages/              # Páginas de la aplicación
+│   ├── Products/          # Página principal de productos
+│   └── ...
+├── services/           # Lógica de negocio y API
+└── types/             # Definiciones de TypeScript
 ```

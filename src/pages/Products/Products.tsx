@@ -47,6 +47,16 @@ export default function Products() {
   const navigate = useNavigate();
   const isMobile = useBreakpointValue({ base: true, md: false });
 
+  const [notification, setNotification] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
+  const showNotification = (type: "success" | "error", message: string) => {
+    setNotification({ type, message });
+    setTimeout(() => setNotification(null), 5000);
+  };
+
   const fetchProducts = useCallback(async (currentUser?: User | null) => {
     setLoading(true);
     try {
@@ -76,8 +86,7 @@ export default function Products() {
 
       setProducts(productsToShow);
     } catch (error) {
-      console.error("Error fetching products:", error);
-      alert("Error al cargar los productos. Por favor, inténtalo de nuevo.");
+      showNotification("error", "Error al cargar los productos. Por favor, inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -123,7 +132,41 @@ export default function Products() {
   );
 
   return (
-    <Container maxW="container.xl" py={6}>
+    <>
+      {notification && (
+        <Box
+          position="fixed"
+          top={4}
+          right={4}
+          zIndex={9999}
+          maxW="400px"
+          p={4}
+          borderRadius="md"
+          bg={notification.type === "success" ? "green.100" : "red.100"}
+          border="1px"
+          borderColor={notification.type === "success" ? "green.200" : "red.200"}
+          mb={4}
+        >
+          <Text fontWeight="bold" color={notification.type === "success" ? "green.800" : "red.800"}>
+            {notification.type === "success" ? "✅ Éxito" : "❌ Error"}
+          </Text>
+          <Text color={notification.type === "success" ? "green.700" : "red.700"} fontSize="sm">
+            {notification.message}
+          </Text>
+          <Button
+            size="xs"
+            position="absolute"
+            top={2}
+            right={2}
+            onClick={() => setNotification(null)}
+            variant="ghost"
+            color={notification.type === "success" ? "green.600" : "red.600"}
+          >
+            ✕
+          </Button>
+        </Box>
+      )}
+      <Container maxW="container.xl" py={6}>
       <Box mb={8}>
         <Flex
           direction={{ base: "column", md: "row" }}
@@ -174,5 +217,6 @@ export default function Products() {
         user={user}
       />
     </Container>
+    </>
   );
 }

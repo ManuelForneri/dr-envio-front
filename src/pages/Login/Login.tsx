@@ -14,13 +14,23 @@ import { checkEmail } from "../../services/productService";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
   const navigate = useNavigate();
+
+  const showNotification = (type: "success" | "error", message: string) => {
+    setNotification({ type, message });
+    setTimeout(() => setNotification(null), 5000);
+  };
+
   const showError = (message: string) => {
-    alert(`Error: ${message}`);
+    showNotification("error", message);
   };
 
   const showSuccess = (message: string) => {
-    alert(`Éxito: ${message}`);
+    showNotification("success", message);
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -61,6 +71,38 @@ export default function Login() {
 
   return (
     <Container maxW="container.sm" py={10}>
+      {notification && (
+        <Box
+          position="fixed"
+          top={4}
+          right={4}
+          zIndex={9999}
+          maxW="400px"
+          p={4}
+          borderRadius="md"
+          bg={notification.type === "success" ? "green.100" : "red.100"}
+          border="1px"
+          borderColor={notification.type === "success" ? "green.200" : "red.200"}
+        >
+          <Text fontWeight="bold" color={notification.type === "success" ? "green.800" : "red.800"}>
+            {notification.type === "success" ? "✅ Éxito" : "❌ Error"}
+          </Text>
+          <Text color={notification.type === "success" ? "green.700" : "red.700"} fontSize="sm">
+            {notification.message}
+          </Text>
+          <Button
+            size="xs"
+            position="absolute"
+            top={2}
+            right={2}
+            onClick={() => setNotification(null)}
+            variant="ghost"
+            color={notification.type === "success" ? "green.600" : "red.600"}
+          >
+            ✕
+          </Button>
+        </Box>
+      )}
       <Box bg="white" p={8} borderRadius="lg" boxShadow="lg">
         <Box>
           <Box textAlign="center">

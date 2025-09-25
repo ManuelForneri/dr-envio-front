@@ -16,6 +16,10 @@ interface AddProductFormProps {
 export const AddProductForm = ({ onProductAdded }: AddProductFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [notification, setNotification] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   const [formData, setFormData] = useState<ProductFormData>({
     brand: "",
@@ -24,6 +28,11 @@ export const AddProductForm = ({ onProductAdded }: AddProductFormProps) => {
     stock: 0,
     price: 0,
   });
+
+  const showNotification = (type: "success" | "error", message: string) => {
+    setNotification({ type, message });
+    setTimeout(() => setNotification(null), 5000);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -66,11 +75,10 @@ export const AddProductForm = ({ onProductAdded }: AddProductFormProps) => {
       });
 
       setShowForm(false);
-
+      showNotification("success", "Producto creado exitosamente");
       onProductAdded();
     } catch (error) {
-      console.error("Error:", error);
-      alert("No se pudo crear el producto. Inténtalo de nuevo.");
+      showNotification("error", "No se pudo crear el producto. Inténtalo de nuevo.");
     } finally {
       setIsSubmitting(false);
     }
@@ -78,9 +86,44 @@ export const AddProductForm = ({ onProductAdded }: AddProductFormProps) => {
 
   if (!showForm) {
     return (
-      <Button onClick={() => setShowForm(true)} colorScheme="blue" mb={4}>
-        Agregar Producto
-      </Button>
+      <>
+        {notification && (
+          <Box
+            position="fixed"
+            top={4}
+            right={4}
+            zIndex={9999}
+            maxW="400px"
+            p={4}
+            borderRadius="md"
+            bg={notification.type === "success" ? "green.100" : "red.100"}
+            border="1px"
+            borderColor={notification.type === "success" ? "green.200" : "red.200"}
+            mb={4}
+          >
+            <Text fontWeight="bold" color={notification.type === "success" ? "green.800" : "red.800"}>
+              {notification.type === "success" ? "✅ Éxito" : "❌ Error"}
+            </Text>
+            <Text color={notification.type === "success" ? "green.700" : "red.700"} fontSize="sm">
+              {notification.message}
+            </Text>
+            <Button
+              size="xs"
+              position="absolute"
+              top={2}
+              right={2}
+              onClick={() => setNotification(null)}
+              variant="ghost"
+              color={notification.type === "success" ? "green.600" : "red.600"}
+            >
+              ✕
+            </Button>
+          </Box>
+        )}
+        <Button onClick={() => setShowForm(true)} colorScheme="blue" mb={4}>
+          Agregar Producto
+        </Button>
+      </>
     );
   }
 
