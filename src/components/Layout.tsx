@@ -23,7 +23,8 @@ const Layout = ({ children }: LayoutProps) => {
         const userData = JSON.parse(userDataStr);
         email = userData.email || "";
       } catch (e) {
-        console.error("Error parsing userData:", e);
+        // Silently handle parsing errors
+        email = "";
       }
     }
 
@@ -32,13 +33,6 @@ const Layout = ({ children }: LayoutProps) => {
     }
 
     const authStatus = !!(token || userDataStr);
-
-    console.log("Auth check:", {
-      token,
-      userData: userDataStr,
-      email,
-      authStatus,
-    });
 
     setIsAuthenticated(authStatus);
     setUserEmail(email);
