@@ -15,7 +15,8 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { getCurrentUser, logout } from "../../services/productService";
-import { ProductCard } from "../../components/ProductCard/ProductCard";
+import { ProductCard } from "../../components/ProductCard";
+import { ProductDetailsModal } from "../../components/ProductDetailsModal";
 import { AddProductForm } from "../../components/AddProductForm/AddProductForm";
 import { Product, User } from "../../types";
 
@@ -40,15 +41,16 @@ export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(
+    null
+  );
   const navigate = useNavigate();
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   const fetchProducts = useCallback(async (currentUser?: User | null) => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/products`
-      );
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/products`);
 
       if (!response.ok) {
         throw new Error(`Error al cargar productos: ${response.status}`);
@@ -158,12 +160,19 @@ export default function Products() {
               key={product._id}
               product={product}
               onViewDetails={(id) => {
-                console.log("Ver detalles del producto:", id);
+                setSelectedProductId(id);
               }}
             />
           ))}
         </SimpleGrid>
       )}
+
+      <ProductDetailsModal
+        isOpen={!!selectedProductId}
+        onClose={() => setSelectedProductId(null)}
+        productId={selectedProductId}
+        user={user}
+      />
     </Container>
   );
 }
